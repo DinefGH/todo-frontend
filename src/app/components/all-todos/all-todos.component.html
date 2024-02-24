@@ -15,6 +15,7 @@
 <div *ngFor="let todo of todos">
     <input type="checkbox" [checked]="todo.checked">
     {{ todo.title }}
+    <button (click)="deleteTodo(todo.id)">Delete</button>
 </div>
 
 

@@ -58,4 +58,29 @@ export class AllTodosComponent {
       }
     });
   }
+
+
+  deleteTodo(todoId: number) {
+    const token = localStorage.getItem('token'); // Retrieve the token from local storage
+    if (!token) {
+      console.error('No authentication token found');
+      return;
+    }
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${token}` // Ensure this matches the expected token format for your backend
+    });
+  
+    const url = `${environment.baseUrl}todos/${todoId}/`; // Construct the URL for deletion
+    this.http.delete(url, { headers }).subscribe({
+      next: () => {
+        console.log('Todo deleted successfully');
+        this.loadTodos(); // Reload the todos list
+      },
+      error: (error) => {
+        console.error('Error deleting todo:', error);
+        // Optionally, update the UI to reflect that the deletion was unsuccessful
+      }
+    });
+  }
 }
