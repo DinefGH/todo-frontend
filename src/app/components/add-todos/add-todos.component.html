@@ -1,0 +1,9 @@
+<div class="addTodosContainer">
+  <form (ngSubmit)="addTodo(addTodos.value)">
+    <div class="form-floating mb-3">
+      <input class="form-control w100" type="text" #addTodos id="addTodos" name="addtodos" placeholder="Add Todo" required>
+      <label for="addTodos">Add Todo</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+</div>
