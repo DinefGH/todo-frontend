@@ -1,21 +1,33 @@
-<div class="addTodosContainer">
-    <form (ngSubmit)="addTodo(addTodos.value)">
-      <div class="form-floating mb-3">
-        <input class="form-control w100" type="text" #addTodos id="addTodos" name="addtodos" placeholder="Add Todo" required>
-        <label for="addTodos">Add Todo</label>
-      </div>
-      <button type="submit" class="btn btn-primary">Add</button>
-    </form>
-  </div>
-
 
 
 
 <h1 *ngIf="error">{{error}}</h1>
-<div *ngFor="let todo of todos">
+<div class="todosContainer" *ngFor="let todo of todos">
     <input type="checkbox" [checked]="todo.checked">
-    {{ todo.title }}
-    <button (click)="deleteTodo(todo.id)">Delete</button>
+    <!-- Toggle Edit/Input -->
+    <div *ngIf="todo.isEditing">
+        <input type="text" [(ngModel)]="todo.title">
+    </div>
+    <div *ngIf="!todo.isEditing">
+        {{ todo.title }}
+    </div>
+    <button class="icon" (click)="deleteTodo(todo.id)"><i class="fa-solid fa-trash"></i></button>
+    <!-- Edit Button -->
+    <button class="icon" (click)="toggleEdit(todo)"><i class="fa-solid fa-pen"></i></button>
+    <!-- Save Button -->
+    <button *ngIf="todo.isEditing" class="icon" (click)="updateTodo(todo)"><i class="fa-solid fa-save"></i>Save</button>
 </div>
+
+
+<div class="addTodosContainer">
+  <form (ngSubmit)="addTodo(addTodos.value)">
+    <div class="form-floating mb-3">
+      <input class="form-control w100" type="text" #addTodos id="addTodos" name="addtodos" placeholder="Add Todo" required>
+      <label for="addTodos">Add Todo</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+</div>
+
 
 

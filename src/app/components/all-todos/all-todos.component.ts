@@ -83,4 +83,44 @@ export class AllTodosComponent {
       }
     });
   }
+
+
+  async toggleEdit(todo: any) {
+    // If the todo does not have an isEditing property, add it dynamically
+    if (todo.isEditing === undefined) {
+      todo.isEditing = true; // Start editing
+    } else {
+      todo.isEditing = !todo.isEditing; // Toggle the existing state
+    }
+  }
+  
+  async updateTodo(todo: any) {
+    if (!todo.title.trim()) return; // Prevent empty todos
+  
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No authentication token found');
+      return;
+    }
+  
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${token}` // Adjust depending on the type of token
+    });
+  
+    const url = `${environment.baseUrl}todos/${todo.id}/`;
+    const body = JSON.stringify({ title: todo.title, checked: todo.checked });
+  
+    this.http.put(url, body, { headers }).subscribe({
+      next: (response) => {
+        console.log('Todo updated:', response);
+        todo.isEditing = false; // Exit editing mode
+        this.loadTodos(); // Optionally, reload todos to reflect the changes
+      },
+      error: (error) => {
+        console.error('Error updating todo:', error);
+        // Handle error...
+      }
+    });
+  }
 }
